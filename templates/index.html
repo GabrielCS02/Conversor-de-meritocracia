@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Bradesco | Automação</title>
+</head>
+<body>
+    <div class="nav-bar"><h2>BANCO BRADESCO S.A.</h2></div>
+    <div class="container">
+        <h3 style="color: #cc092f; margin-top: 0;">🚀 Conversor de Planilha</h3>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="arquivo" accept=".xlsx, .csv" required>
+            <button type="submit" style="background: #cc092f; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                PROCESSAR
+            </button>
+        </form>
+
+        {% if nome_arquivo %}
+            <div class="file-name-badge">📄 {{ nome_arquivo }}</div>
+        {% endif %}
+
+        {% if json_data and not avisos %}
+            <div class="alerta-success">✅ Processamento concluído com sucesso!</div>
+        {% endif %}
+
+        {% if avisos %}
+            <h4 style="color: #cc092f; margin-bottom: 10px;">Atenção com as Somas:</h4>
+            {% for aviso in avisos %}
+                <div class="alerta-warning">⚠️ {{ aviso }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if json_data %}
+            <a href="#" id="btnDownload" class="btn-download">
+                BAIXAR JSON 📥
+            </a>
+            
+            <h4 style="margin-top: 25px;">Visualização da Estrutura:</h4>
+            <pre class="json-output" id="jsonContent">{{ json_data | safe }}</pre>
+
+            <script>
+                (function() {
+                    // Captura o conteúdo do JSON exatamente como exibido na tela
+                    const rawJson = document.getElementById('jsonContent').textContent;
+                    
+                    // Cria um Blob (objeto binário) para garantir o download limpo
+                    const blob = new Blob([rawJson], { type: 'application/json' });
+                    const url = window.URL.createObjectURL(blob);
+                    
+                    const downloadBtn = document.getElementById('btnDownload');
+                    downloadBtn.href = url;
+                    // Define o nome do arquivo dinamicamente
+                    downloadBtn.download = "motor_{{ nome_arquivo.split('.')[0] if nome_arquivo else 'resultado' }}.json";
+                })();
+            </script>
+        {% endif %}
+    </div>
+</body>
+</html>

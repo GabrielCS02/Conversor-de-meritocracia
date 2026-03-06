@@ -1,73 +1,74 @@
-/* style.css */
+/* assets/style.css */
 
-/* Ajustes gerais de layout */
+/* Remove margens extras e garante que o app ocupe a tela toda */
 .block-container {
-    padding-top: 0rem;
-    padding-bottom: 3rem;
+    padding-top: 0rem !important;
+    padding-bottom: 6rem !important; /* Espaço para o rodapé não cobrir o conteúdo */
 }
 
-/* Barra Superior Profissional */
+/* Barra Superior Compacta e Alinhada */
 .nav-bar {
     background-color: #cc092f;
     color: white;
-    padding: 12px 40px;
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #dee2e6;
-    margin-bottom: 25px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 1px solid #a30725;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.nav-bar h2 { margin: 0; font-size: 20px; font-weight: 600; }
-.nav-bar p { margin: 0; font-size: 14px; font-weight: 300; }
+.nav-bar h2 { 
+    margin: 0 !important; 
+    font-size: 1.2rem !important; 
+    font-weight: 700 !important;
+    color: white !important;
+}
 
-/* Estilização das Abas */
+.nav-bar p { 
+    margin: 0 !important; 
+    font-size: 0.9rem !important; 
+    font-weight: 400 !important;
+    opacity: 0.9;
+}
+
+/* --- AJUSTE DAS ABAS (MANUAL ILEGÍVEL) --- */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 15px;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .stTabs [data-baseweb="tab"] {
-    background-color: #f8f9fa;
-    border-radius: 4px 4px 0 0;
+    background-color: #f1f3f5; /* Fundo cinza claro para abas inativas */
+    border-radius: 5px 5px 0 0;
     padding: 10px 25px;
-    font-weight: 500;
+    color: #495057 !important; /* Cor do texto bem visível */
+    font-weight: 600;
 }
 
 .stTabs [aria-selected="true"] {
     background-color: #cc092f !important;
-    color: white !important;
+    color: white !important; /* Texto branco na aba selecionada */
 }
 
-/* Área de Upload (Dropzone) */
+/* Área de Upload */
 [data-testid="stFileUploadDropzone"] {
     border: 2px dashed #cc092f;
     background-color: #fffafa;
-    border-radius: 8px;
 }
 
-/* Botão de Download */
-div.stDownloadButton > button {
-    background-color: #cc092f;
-    color: white;
-    border-radius: 4px;
-    height: 3.5rem;
-    font-weight: 700;
-    border: none;
-    transition: 0.3s;
-}
-
-div.stDownloadButton > button:hover {
-    background-color: #a30725;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-/* Texto do Rodapé */
+/* Rodapé Fixo e Elegante */
 .footer-text {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    color: #6c757d;
     text-align: center;
-    color: #adb5bd;
+    padding: 15px 0;
     font-size: 12px;
-    margin-top: 60px;
-    padding: 20px;
+    border-top: 1px solid #dee2e6;
+    z-index: 1000;
 }

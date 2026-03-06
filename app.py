@@ -159,6 +159,6 @@ with tab2:
 # Rodapé institucional
 st.markdown("""
     <div class="footer-text">
-        © 2026 Banco Bradesco S.A. | Uso Interno - Recuperação de Crédito
+        © 2026 Banco Bradesco S.A. | Inteligência de Dados | Uso Interno - Recuperação de Crédito
     </div>
     """, unsafe_allow_html=True)

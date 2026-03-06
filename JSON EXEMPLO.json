@@ -1,0 +1,48 @@
+{
+  "perfis": {
+    "PJBCODIGAM": {
+      "portfolios": {
+        "BCO": {
+          "nome": "BCO",
+          "canais": {
+            "DIGITALEXTERNO": {
+              "percentual": 100,
+              "assessorias": {
+                "TDBEL000": { "percentual": 50 },
+                "TDPAS000": { "percentual": 50 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "PJBCOTELEEMPGRP3": {
+      "portfolios": {
+        "BCO": {
+          "nome": "BCO",
+          "canais": {
+            "CALLCENTER": {
+              "percentual": 20,
+              "assessorias": {
+                "TDPAS000": { "percentual": 27 },
+                "TDBEL000": { "percentual": 37 },
+                "TDTRC000": { "percentual": 36 }
+              }
+            },
+            "DIGITALEXTERNO": {
+              "percentual": 30,
+              "assessorias": {
+                "TDPAS000": { "percentual": 50 },
+                "TDBEL000": { "percentual": 50 }
+              }
+            },
+            "DIGITALINTERNO": {
+              "percentual": 50,
+              "assessorias": { "DIGINTERNO": { "percentual": 100 } }
+            }
+          }
+        }
+      }
+    }
+  }
+}

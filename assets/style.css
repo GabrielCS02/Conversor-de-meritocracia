@@ -1,140 +1,129 @@
 /* assets/style.css */
 
-/* Ajustes gerais de layout e tipografia */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+/* 1. Reset e Forçar Tema Claro */
+.stApp {
+    background-color: #f0f2f5 !important;
 }
 
+/* Remove margens padrão do Streamlit para o cabeçalho colar no topo */
 .block-container {
     padding-top: 0rem !important;
-    padding-bottom: 3rem !important;
+    padding-bottom: 5rem !important;
+    max-width: 100% !important;
 }
 
-/* Barra Superior Profissional e Simplificada */
+/* 2. Barra Superior (Header) */
 .nav-bar {
     background-color: #cc092f;
     color: white;
-    padding: 15px 40px;
-    border-bottom: 1px solid #a30725;
-    margin-bottom: 0px; /* Alinhado ao wrapper */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 25px 5%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .nav-bar h2 { 
-    margin: 0; 
+    margin: 0 !important; 
     font-size: 22px !important; 
     font-weight: 700 !important; 
     color: white !important;
+    letter-spacing: 0.5px;
 }
 
-/* Wrapper para Arredondamento Superior e Destaque de Bordas */
+/* 3. Wrapper de Conteúdo (Card Principal) */
 .main-content-wrapper {
     background-color: white;
-    border-radius: 15px 15px 0 0; /* Arredondamento superior */
-    border: 1px solid #dee2e6; /* Borda sutil */
-    border-bottom: none;
-    margin: 0 40px; /* Margem lateral alinhada ao header */
-    padding: 30px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05); /* Sombra suave para cima */
-    position: relative;
-    top: -5px; /* Leve sobreposição para fusão visual */
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+    margin: 100px auto 20px auto; /* Margem superior para compensar o header fixo */
+    max-width: 90%;
+    padding: 35px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    min-height: 70vh;
 }
 
-/* Melhores Textos e Hierarquia */
-h3, h4 {
-    color: #333 !important;
-    font-weight: 600 !important;
-}
-
-h3 {
-    font-size: 24px !important;
-    margin-bottom: 15px !important;
-}
-
-h4 {
-    font-size: 18px !important;
-    margin-top: 10px !important;
-}
-
-.tab-content p, .tab-content li, stCaption {
-    font-size: 15px !important;
-    color: #555 !important;
-    line-height: 1.6 !important;
-}
-
-/* Estilização das Abas */
+/* 4. Estilização de Abas (Tabs) */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 15px;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f2f5;
 }
 
 .stTabs [data-baseweb="tab"] {
-    background-color: #f8f9fa;
-    border-radius: 5px 5px 0 0;
-    padding: 12px 30px;
-    font-weight: 600;
-    font-size: 16px;
-    border: 1px solid #dee2e6;
-    border-bottom: none;
-    color: #555 !important;
+    background-color: #f8f9fa !important;
+    border-radius: 8px 8px 0 0 !important;
+    padding: 10px 25px !important;
+    font-weight: 600 !important;
+    border: 1px solid #dee2e6 !important;
+    border-bottom: none !important;
+    color: #666 !important;
+    transition: all 0.2s ease;
 }
 
 .stTabs [aria-selected="true"] {
     background-color: #cc092f !important;
     color: white !important;
-    border-color: #cc092f;
+    border-color: #cc092f !important;
 }
 
-/* Área de Upload (Dropzone) */
+/* 5. Área de Upload (Dropzone) */
 [data-testid="stFileUploadDropzone"] {
-    border: 2px dashed #cc092f;
-    background-color: #fffafa;
-    border-radius: 10px;
-    padding: 20px;
+    border: 2px dashed #cc092f !important;
+    background-color: #fffafa !important;
+    border-radius: 12px !important;
+    padding: 40px !important;
 }
 
-/* Botão de Download */
+/* Ajusta as cores dos textos dentro do upload que podem sumir no dark mode */
+[data-testid="stFileUploadDropzone"] div div {
+    color: #444 !important;
+}
+
+/* 6. Botões e Elementos de Ação */
 div.stDownloadButton > button {
-    background-color: #cc092f;
-    color: white;
-    border-radius: 5px;
+    background-color: #cc092f !important;
+    color: white !important;
+    border-radius: 6px !important;
     height: 3.5rem;
-    font-weight: 700;
-    font-size: 16px;
-    border: none;
-    transition: 0.3s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-weight: 700 !important;
+    border: none !important;
+    width: 100%;
+    transition: 0.3s !important;
 }
 
 div.stDownloadButton > button:hover {
-    background-color: #a30725;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background-color: #a30725 !important;
+    box-shadow: 0 4px 12px rgba(163, 7, 37, 0.3) !important;
 }
 
-/* Estilo para Conteúdo do Manual */
+/* 7. Manual e Textos */
 .manual-content {
     background-color: #fbfcfd;
-    padding: 25px;
-    border-radius: 8px;
+    padding: 30px;
+    border-radius: 10px;
     border: 1px solid #e9ecef;
+    line-height: 1.8;
 }
 
-.manual-content ul {
-    margin-left: 20px !important;
+h3, h4 {
+    color: #212529 !important;
+    margin-bottom: 1rem !important;
 }
 
-/* Texto do Rodapé Fixo (Mantido) */
+/* 8. Rodapé Fixo */
 .footer-text {
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
     background-color: white;
-    color: #6c757d;
+    color: #888;
     text-align: center;
-    padding: 15px 0;
-    font-size: 12px;
-    border-top: 1px solid #dee2e6;
+    padding: 12px 0;
+    font-size: 11px;
+    border-top: 1px solid #eee;
     z-index: 1000;
 }

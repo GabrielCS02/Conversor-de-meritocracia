@@ -11,7 +11,6 @@ def load_css(file_name):
         with open(file_name) as f:
             st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     else:
-        # Alerta silencioso no console caso você esqueça de subir a pasta assets
         print(f"Aviso: O arquivo {file_name} não foi encontrado.")
 
 # --- LÓGICA DE CONVERSÃO ---
@@ -70,12 +69,13 @@ def transformar_para_hierarquia(df):
 
 # --- CONFIGURAÇÃO E INTERFACE ---
 
+# Configuração da página para evitar conflitos de tema
 st.set_page_config(page_title="Bradesco S.A. | Recuperação de Crédito", page_icon="🏦", layout="wide")
 
 # Carregar estilização externa
 load_css("assets/style.css")
 
-# Header simplificado (HTML para estrutura de classes do CSS)
+# Estrutura de Cabeçalho Corporativo
 st.markdown("""
     <div class="nav-bar">
         <h2>Banco Bradesco S.A.</h2>
@@ -87,14 +87,15 @@ st.markdown("""
 tab1, tab2 = st.tabs(["🚀 Conversor", "📖 Manual"])
 
 with tab1:
-    st.markdown("<div class='tab-content'>", unsafe_allow_html=True)
     st.markdown("#### Carregue a Planilha de Distribuição")
     st.caption("Arraste o arquivo .xlsx ou .csv para processamento")
-    arquivo = st.file_uploader("", type=['xlsx', 'csv'])
+    
+    # O componente de upload agora herdará o estilo do CSS
+    arquivo = st.file_uploader("", type=['xlsx', 'csv'], label_visibility="collapsed")
 
     if arquivo:
         try:
-            # Leitura do arquivo (suporte a Excel e CSV com diferentes encodings)
+            # Leitura do arquivo com suporte a encodings comuns
             if arquivo.name.endswith('.csv'):
                 try:
                     df = pd.read_csv(arquivo, encoding='utf-8')
@@ -103,13 +104,13 @@ with tab1:
             else:
                 df = pd.read_excel(arquivo)
 
-            # Processamento
+            # Processamento dos dados
             json_final, avisos, total_perfis, portfolio_nome = transformar_para_hierarquia(df)
             
             # Resumo do Processamento
             st.info(f"**Processamento Concluído:** {total_perfis} perfis identificados no Portfólio **{portfolio_nome}**.")
 
-            # Exibição de Alertas de Erro
+            # Exibição de Alertas de Erro ou Sucesso
             if avisos:
                 for aviso in avisos:
                     st.warning(aviso)
@@ -135,10 +136,9 @@ with tab1:
                 )
         except Exception as e:
             st.error(f"Erro ao processar o arquivo: {e}")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 with tab2:
-    st.markdown("<div class='tab-content manual-content'>", unsafe_allow_html=True)
+    st.markdown('<div class="manual-content">', unsafe_allow_html=True)
     st.markdown(f"""
     ### Guia de Operação Interna
     
@@ -160,7 +160,8 @@ with tab2:
     """)
     st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True) # Fecha main-content-wrapper
+# Fechamento do wrapper principal
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Rodapé institucional fixo
 st.markdown("""

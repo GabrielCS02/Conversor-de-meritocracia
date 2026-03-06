@@ -5,7 +5,11 @@
     background-color: #f0f2f5 !important;
 }
 
-/* Remove margens padrão do Streamlit para o cabeçalho colar no topo */
+/* Remove o header nativo do Streamlit para a barra subir ao topo real */
+header[data-testid="stHeader"] {
+    display: none !important;
+}
+
 .block-container {
     padding-top: 0rem !important;
     padding-bottom: 5rem !important;
@@ -16,12 +20,13 @@
 .nav-bar {
     background-color: #cc092f;
     color: white;
-    padding: 25px 5%;
+    padding: 20px 5%;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 999;
+    right: 0;
+    z-index: 9999;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
@@ -38,11 +43,11 @@
     background-color: white;
     border-radius: 12px;
     border: 1px solid #dee2e6;
-    margin: 100px auto 20px auto; /* Margem superior para compensar o header fixo */
+    margin: 100px auto 30px auto; 
     max-width: 90%;
     padding: 35px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    min-height: 70vh;
+    min-height: auto; 
 }
 
 /* 4. Estilização de Abas (Tabs) */
@@ -60,7 +65,6 @@
     border: 1px solid #dee2e6 !important;
     border-bottom: none !important;
     color: #666 !important;
-    transition: all 0.2s ease;
 }
 
 .stTabs [aria-selected="true"] {
@@ -69,48 +73,54 @@
     border-color: #cc092f !important;
 }
 
-/* 5. Área de Upload (Dropzone) */
+/* 5. Área de Upload */
 [data-testid="stFileUploadDropzone"] {
     border: 2px dashed #cc092f !important;
     background-color: #fffafa !important;
     border-radius: 12px !important;
-    padding: 40px !important;
 }
 
-/* Ajusta as cores dos textos dentro do upload que podem sumir no dark mode */
-[data-testid="stFileUploadDropzone"] div div {
-    color: #444 !important;
-}
-
-/* 6. Botões e Elementos de Ação */
+/* 6. Botões de Download */
 div.stDownloadButton > button {
     background-color: #cc092f !important;
     color: white !important;
     border-radius: 6px !important;
-    height: 3.5rem;
     font-weight: 700 !important;
     border: none !important;
     width: 100%;
-    transition: 0.3s !important;
+    height: 3.5rem;
 }
 
-div.stDownloadButton > button:hover {
-    background-color: #a30725 !important;
-    box-shadow: 0 4px 12px rgba(163, 7, 37, 0.3) !important;
-}
-
-/* 7. Manual e Textos */
+/* 7. Manual e Textos - Refinado */
 .manual-content {
-    background-color: #fbfcfd;
+    background-color: #f8f9fa;
     padding: 30px;
-    border-radius: 10px;
-    border: 1px solid #e9ecef;
-    line-height: 1.8;
+    border-radius: 12px;
+    border-left: 6px solid #cc092f;
+    line-height: 1.6;
+    color: #333 !important;
 }
 
-h3, h4 {
-    color: #212529 !important;
-    margin-bottom: 1rem !important;
+.manual-content h3 {
+    color: #cc092f !important;
+    font-weight: 700;
+    margin-bottom: 20px !important;
+}
+
+.manual-tag {
+    background-color: #212529;
+    color: #00ff41 !important;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+    font-weight: bold;
+    display: inline-block;
+    margin: 2px 0;
+}
+
+.manual-section {
+    margin-bottom: 20px;
 }
 
 /* 8. Rodapé Fixo */
@@ -122,7 +132,7 @@ h3, h4 {
     background-color: white;
     color: #888;
     text-align: center;
-    padding: 12px 0;
+    padding: 10px 0;
     font-size: 11px;
     border-top: 1px solid #eee;
     z-index: 1000;

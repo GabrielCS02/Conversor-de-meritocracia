@@ -1,8 +1,16 @@
 import streamlit as st
 import pandas as pd
 import json
+import os
+
+# --- FUNÇÕES DE LÓGICA ---
 
 def transformar_para_hierarquia(df):
+    """
+    Converte o DataFrame da planilha para a estrutura JSON aninhada.
+    Realiza o preenchimento de células vazias (ffill) e valida somas de 100%.
+    """
+    # Preenchimento automático para células mescladas/vazias
     df['cGrpCobrMotorDecis'] = df['cGrpCobrMotorDecis'].ffill()
     df['cCanalCobrMotorDecis'] = df['cCanalCobrMotorDecis'].ffill()
     df['DISTRIBUIÇÃO cCanalCobrMotorDecis'] = df['DISTRIBUIÇÃO cCanalCobrMotorDecis'].ffill()
@@ -10,6 +18,7 @@ def transformar_para_hierarquia(df):
     resultado = {"perfis": {}}
     erros_soma = []
     
+    # Agrupamento por Perfil
     for perfil, grupo_perfil in df.groupby('cGrpCobrMotorDecis'):
         nome_portfolio = "BCO"
         resultado["perfis"][perfil] = {
@@ -18,22 +27,27 @@ def transformar_para_hierarquia(df):
             }
         }
         
+        # Validação: Soma dos canais do Perfil
         df_canais_unicos = grupo_perfil.drop_duplicates('cCanalCobrMotorDecis')
         soma_canais = df_canais_unicos['DISTRIBUIÇÃO cCanalCobrMotorDecis'].sum()
         if soma_canais != 100:
-            erros_soma.append(f"⚠️ **Perfil {perfil}**: Soma dos canais é **{soma_canais}%**.")
+            erros_soma.append(f"⚠️ **Perfil {perfil}**: A soma dos canais é **{soma_canais}%** (esperado 100%).")
 
+        # Agrupamento por Canal
         for canal, grupo_canal in grupo_perfil.groupby('cCanalCobrMotorDecis'):
             percentual_canal = int(grupo_canal['DISTRIBUIÇÃO cCanalCobrMotorDecis'].iloc[0])
+            
+            # Validação: Soma das assessorias do Canal
             soma_asses = grupo_canal['DISTRIBUIÇÃO'].sum()
             if soma_asses != 100:
-                erros_soma.append(f"❌ **Canal {canal}** ({perfil}): Soma das assessorias é **{soma_asses}%**.")
+                erros_soma.append(f"❌ **Canal {canal}** (Perfil {perfil}): A soma das assessorias é **{soma_asses}%**.")
 
             resultado["perfis"][perfil]["portfolios"][nome_portfolio]["canais"][canal] = {
                 "percentual": percentual_canal,
                 "assessorias": {}
             }
             
+            # Adição das Assessorias
             for _, linha in grupo_canal.iterrows():
                 assessoria = str(linha['cDecisAssesMotorDecis'])
                 perc_assessoria = int(linha['DISTRIBUIÇÃO'])
@@ -43,149 +57,108 @@ def transformar_para_hierarquia(df):
                 
     return resultado, erros_soma, len(resultado["perfis"]), "BCO"
 
-# --- Interface Estilizada Bradesco ---
-st.set_page_config(page_title="Bradesco | Meritocracia", page_icon="🏦", layout="wide")
+import streamlit as st
+import pandas as pd
+import json
+import os
 
-# CSS para Identidade Visual Bradesco
+# --- FUNÇÃO DE CARREGAMENTO ---
+
+def load_css(file_name):
+    """Carrega o arquivo CSS externo da pasta assets"""
+    if os.path.exists(file_name):
+        with open(file_name) as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    else:
+        # Alerta silencioso no console caso você esqueça de subir a pasta assets
+        print(f"Aviso: O arquivo {file_name} não foi encontrado.")
+
+st.set_page_config(page_title="Bradesco | Recuperação de Crédito", page_icon="🏦", layout="wide")
+load_css("assets/style.css")
+st.set_page_config(page_title="Bradesco | Recuperação de Crédito", page_icon="🏦", layout="wide")
+# Carregar estilização externa
+load_css("assets/style.css")
+# Header customizado (HTML para estrutura de classes do CSS)
 st.markdown("""
-    <style>
-    /* Cor de fundo e fontes */
-    .stApp {
-        background-color: #ffffff;
-    }
-    
-    /* Header estilizado */
-    .main-header {
-        background-color: #cc092f;
-        padding: 20px;
-        border-radius: 0px 0px 10px 10px;
-        color: white;
-        text-align: center;
-        margin-bottom: 25px;
-        font-family: sans-serif;
-    }
-
-    /* Customização das Abas */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 24px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        white-space: pre-wrap;
-        background-color: #f0f2f6;
-        border-radius: 4px 4px 0px 0px;
-        gap: 1px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #cc092f !important;
-        color: white !important;
-    }
-
-    /* Área de Upload */
-    [data-testid="stFileUploadDropzone"] {
-        border: 2px dashed #cc092f;
-        background-color: #fff5f6;
-        border-radius: 10px;
-    }
-
-    /* Botão de Download */
-    div.stDownloadButton > button {
-        background-color: #cc092f;
-        color: white;
-        border-radius: 5px;
-        border: none;
-        height: 50px;
-        width: 100%;
-        font-weight: bold;
-    }
-    div.stDownloadButton > button:hover {
-        background-color: #a30725;
-        color: white;
-    }
-
-    /* Rodapé */
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: #f8f9fa;
-        color: #6c757d;
-        text-align: center;
-        padding: 10px;
-        font-size: 12px;
-        border-top: 1px solid #dee2e6;
-    }
-    </style>
-    
-    <div class="main-header">
-        <h1>Banco Bradesco S.A.</h1>
-        <p>Departamento de Meritocracia | Conversor de Configurações Motor de Decisão</p>
+    <div class="nav-bar">
+        <div><h2>Bradesco | Inteligência de Dados</h2></div>
+        <div><p>Recuperação de Crédito</p></div>
     </div>
     """, unsafe_allow_html=True)
-
-# Criação das Abas
-tab1, tab2 = st.tabs(["🚀 Conversor de Arquivos", "📖 Manual de Instruções"])
-
+# Definição das Abas
+tab1, tab2 = st.tabs(["🚀 Conversor", "📖 Manual"])
 with tab1:
-    st.markdown("### 📥 Upload de Planilha")
-    st.caption("Arraste o arquivo .xlsx ou .csv para processamento")
+    st.markdown("#### Carregue a Planilha de Distribuição")
     arquivo = st.file_uploader("", type=['xlsx', 'csv'])
 
     if arquivo:
         try:
-            df = pd.read_csv(arquivo) if arquivo.name.endswith('.csv') else pd.read_excel(arquivo)
+            # Leitura do arquivo (suporte a Excel e CSV com diferentes encodings)
+            if arquivo.name.endswith('.csv'):
+                try:
+                    df = pd.read_csv(arquivo, encoding='utf-8')
+                except:
+                    df = pd.read_csv(arquivo, encoding='latin1')
+            else:
+                df = pd.read_excel(arquivo)
+
+            # Processamento
             json_final, avisos, total_perfis, portfolio_nome = transformar_para_hierarquia(df)
             
-            st.info(f"📊 **Processamento Concluído:** {total_perfis} perfis identificados no portfólio **{portfolio_nome}**.")
+            # Resumo do Processamento
+            st.info(f"**Processamento:** {total_perfis} perfis identificados no Portfólio **{portfolio_nome}**.")
 
+            # Exibição de Alertas de Erro
             if avisos:
-                st.markdown("#### 🚨 Alertas de Validação")
-                for aviso in avisos: st.warning(aviso)
+                for aviso in avisos:
+                    st.warning(aviso)
             else:
-                st.success("✅ Todos os grupos de distribuição somam 100%.")
+                st.success("✅ Validação concluída: Todas as distribuições somam 100%.")
 
             st.divider()
+            
+            # Layout de Resultados
             col1, col2 = st.columns([2, 1])
             with col1:
-                st.subheader("Visualização da Estrutura")
+                st.subheader("Prévia da Estrutura JSON")
                 st.json(json_final)
             with col2:
-                st.subheader("Exportar Dados")
+                st.subheader("Exportação")
                 json_str = json.dumps(json_final, indent=2, ensure_ascii=False)
-                st.download_button("GERAR ARQUIVO JSON 📥", json_str, f"config_motor_{portfolio_nome}.json", "application/json", use_container_width=True)
+                st.download_button(
+                    label="BAIXAR ARQUIVO JSON 📥",
+                    data=json_str,
+                    file_name=f"import_motor_{portfolio_nome}.json",
+                    mime="application/json",
+                    use_container_width=True
+                )
         except Exception as e:
-            st.error(f"Erro ao processar arquivo: {e}")
+            st.error(f"Erro ao processar o arquivo: {e}")
 
 with tab2:
     st.markdown(f"""
-    ## Guia de Operação Interna
+    ### Guia de Operação Interna
     
-    Este sistema é uma ferramenta de suporte para a equipe de **Meritocracia do Bradesco**, visando automatizar a geração de documentos JSON para o banco de dados.
+    Esta ferramenta automatiza a conversão de planilhas de metas para o formato JSON do MongoDB.
     
-    ### 1. Requisitos da Planilha
-    A planilha de entrada deve conter obrigatoriamente as colunas:
-    * `cGrpCobrMotorDecis`
-    * `cCanalCobrMotorDecis`
-    * `DISTRIBUIÇÃO cCanalCobrMotorDecis`
-    * `cDecisAssesMotorDecis`
-    * `DISTRIBUIÇÃO`
+    **1. Colunas Obrigatórias:**
+    A planilha deve conter exatamente as colunas:
+    - `cGrpCobrMotorDecis` (Perfil)
+    - `cCanalCobrMotorDecis` (Canal)
+    - `DISTRIBUIÇÃO cCanalCobrMotorDecis` (% do Canal)
+    - `cDecisAssesMotorDecis` (Assessoria)
+    - `DISTRIBUIÇÃO` (% da Assessoria)
     
-    ### 2. Validações Automáticas
-    * O sistema verifica se a soma das distribuições por canal atinge **100%**.
-    * O sistema verifica se a soma das distribuições por assessoria atinge **100%**.
+    **2. Validação de Dados:**
+    O sistema bloqueia a validação positiva caso a soma de qualquer grupo seja diferente de **100**.
     
-    ### 3. Suporte Técnico
-    Para dúvidas sobre o funcionamento ou erros de conversão, entre em contato:
-    * **Responsável:** Gabriel Silva
-    * **Email:** gabrielc.silva@bradesco.com.br
+    **3. Suporte:**
+    Em caso de dúvidas, contate: **gabrielc.silva@bradesco.com.br**
     """)
 
-# Rodapé Fixo
+# Rodapé institucional
 st.markdown("""
-    <div class="footer">
-        © 2024 Banco Bradesco S.A. Todos os direitos reservados. Uso restrito e interno.
+    <div class="footer-text">
+        © 2026 Banco Bradesco S.A. | Uso Interno - Recuperação de Crédito
     </div>
     """, unsafe_allow_html=True)

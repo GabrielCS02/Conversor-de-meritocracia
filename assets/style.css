@@ -1,0 +1,73 @@
+/* style.css */
+
+/* Ajustes gerais de layout */
+.block-container {
+    padding-top: 0rem;
+    padding-bottom: 3rem;
+}
+
+/* Barra Superior Profissional */
+.nav-bar {
+    background-color: #cc092f;
+    color: white;
+    padding: 12px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #dee2e6;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-bar h2 { margin: 0; font-size: 20px; font-weight: 600; }
+.nav-bar p { margin: 0; font-size: 14px; font-weight: 300; }
+
+/* Estilização das Abas */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 15px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: #f8f9fa;
+    border-radius: 4px 4px 0 0;
+    padding: 10px 25px;
+    font-weight: 500;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #cc092f !important;
+    color: white !important;
+}
+
+/* Área de Upload (Dropzone) */
+[data-testid="stFileUploadDropzone"] {
+    border: 2px dashed #cc092f;
+    background-color: #fffafa;
+    border-radius: 8px;
+}
+
+/* Botão de Download */
+div.stDownloadButton > button {
+    background-color: #cc092f;
+    color: white;
+    border-radius: 4px;
+    height: 3.5rem;
+    font-weight: 700;
+    border: none;
+    transition: 0.3s;
+}
+
+div.stDownloadButton > button:hover {
+    background-color: #a30725;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Texto do Rodapé */
+.footer-text {
+    text-align: center;
+    color: #adb5bd;
+    font-size: 12px;
+    margin-top: 60px;
+    padding: 20px;
+}

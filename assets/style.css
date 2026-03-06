@@ -1,64 +1,130 @@
 /* assets/style.css */
 
-/* Remove margens extras e garante que o app ocupe a tela toda */
-.block-container {
-    padding-top: 0rem !important;
-    padding-bottom: 6rem !important; /* Espaço para o rodapé não cobrir o conteúdo */
+/* Ajustes gerais de layout e tipografia */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
-/* Barra Superior Compacta e Alinhada */
+.block-container {
+    padding-top: 0rem !important;
+    padding-bottom: 3rem !important;
+}
+
+/* Barra Superior Profissional e Simplificada */
 .nav-bar {
     background-color: #cc092f;
     color: white;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 15px 40px;
     border-bottom: 1px solid #a30725;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 0px; /* Alinhado ao wrapper */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .nav-bar h2 { 
-    margin: 0 !important; 
-    font-size: 1.2rem !important; 
-    font-weight: 700 !important;
+    margin: 0; 
+    font-size: 22px !important; 
+    font-weight: 700 !important; 
     color: white !important;
 }
 
-.nav-bar p { 
-    margin: 0 !important; 
-    font-size: 0.9rem !important; 
-    font-weight: 400 !important;
-    opacity: 0.9;
+/* Wrapper para Arredondamento Superior e Destaque de Bordas */
+.main-content-wrapper {
+    background-color: white;
+    border-radius: 15px 15px 0 0; /* Arredondamento superior */
+    border: 1px solid #dee2e6; /* Borda sutil */
+    border-bottom: none;
+    margin: 0 40px; /* Margem lateral alinhada ao header */
+    padding: 30px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05); /* Sombra suave para cima */
+    position: relative;
+    top: -5px; /* Leve sobreposição para fusão visual */
 }
 
-/* --- AJUSTE DAS ABAS (MANUAL ILEGÍVEL) --- */
+/* Melhores Textos e Hierarquia */
+h3, h4 {
+    color: #333 !important;
+    font-weight: 600 !important;
+}
+
+h3 {
+    font-size: 24px !important;
+    margin-bottom: 15px !important;
+}
+
+h4 {
+    font-size: 18px !important;
+    margin-top: 10px !important;
+}
+
+.tab-content p, .tab-content li, stCaption {
+    font-size: 15px !important;
+    color: #555 !important;
+    line-height: 1.6 !important;
+}
+
+/* Estilização das Abas */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 15px;
+    margin-bottom: 10px;
 }
 
 .stTabs [data-baseweb="tab"] {
-    background-color: #f1f3f5; /* Fundo cinza claro para abas inativas */
+    background-color: #f8f9fa;
     border-radius: 5px 5px 0 0;
-    padding: 10px 25px;
-    color: #495057 !important; /* Cor do texto bem visível */
+    padding: 12px 30px;
     font-weight: 600;
+    font-size: 16px;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    color: #555 !important;
 }
 
 .stTabs [aria-selected="true"] {
     background-color: #cc092f !important;
-    color: white !important; /* Texto branco na aba selecionada */
+    color: white !important;
+    border-color: #cc092f;
 }
 
-/* Área de Upload */
+/* Área de Upload (Dropzone) */
 [data-testid="stFileUploadDropzone"] {
     border: 2px dashed #cc092f;
     background-color: #fffafa;
+    border-radius: 10px;
+    padding: 20px;
 }
 
-/* Rodapé Fixo e Elegante */
+/* Botão de Download */
+div.stDownloadButton > button {
+    background-color: #cc092f;
+    color: white;
+    border-radius: 5px;
+    height: 3.5rem;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    transition: 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+div.stDownloadButton > button:hover {
+    background-color: #a30725;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Estilo para Conteúdo do Manual */
+.manual-content {
+    background-color: #fbfcfd;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.manual-content ul {
+    margin-left: 20px !important;
+}
+
+/* Texto do Rodapé Fixo (Mantido) */
 .footer-text {
     position: fixed;
     left: 0;

@@ -3,7 +3,18 @@ import pandas as pd
 import json
 import os
 
-# --- FUNÇÕES DE LÓGICA ---
+# --- FUNÇÃO DE CARREGAMENTO ---
+
+def load_css(file_name):
+    """Carrega o arquivo CSS externo da pasta assets"""
+    if os.path.exists(file_name):
+        with open(file_name) as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    else:
+        # Alerta silencioso no console caso você esqueça de subir a pasta assets
+        print(f"Aviso: O arquivo {file_name} não foi encontrado.")
+
+# --- LÓGICA DE CONVERSÃO ---
 
 def transformar_para_hierarquia(df):
     """
@@ -57,38 +68,28 @@ def transformar_para_hierarquia(df):
                 
     return resultado, erros_soma, len(resultado["perfis"]), "BCO"
 
-import streamlit as st
-import pandas as pd
-import json
-import os
+# --- CONFIGURAÇÃO E INTERFACE ---
 
-# --- FUNÇÃO DE CARREGAMENTO ---
+st.set_page_config(page_title="Bradesco S.A. | Recuperação de Crédito", page_icon="🏦", layout="wide")
 
-def load_css(file_name):
-    """Carrega o arquivo CSS externo da pasta assets"""
-    if os.path.exists(file_name):
-        with open(file_name) as f:
-            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-    else:
-        # Alerta silencioso no console caso você esqueça de subir a pasta assets
-        print(f"Aviso: O arquivo {file_name} não foi encontrado.")
-
-st.set_page_config(page_title="Bradesco | Recuperação de Crédito", page_icon="🏦", layout="wide")
-load_css("assets/style.css")
-st.set_page_config(page_title="Bradesco | Recuperação de Crédito", page_icon="🏦", layout="wide")
 # Carregar estilização externa
 load_css("assets/style.css")
-# Header customizado (HTML para estrutura de classes do CSS)
+
+# Header simplificado (HTML para estrutura de classes do CSS)
 st.markdown("""
     <div class="nav-bar">
-        <div><h2>Bradesco | Inteligência de Dados</h2></div>
-        <div><p>Recuperação de Crédito</p></div>
+        <h2>Banco Bradesco S.A.</h2>
     </div>
+    <div class="main-content-wrapper">
     """, unsafe_allow_html=True)
+
 # Definição das Abas
 tab1, tab2 = st.tabs(["🚀 Conversor", "📖 Manual"])
+
 with tab1:
+    st.markdown("<div class='tab-content'>", unsafe_allow_html=True)
     st.markdown("#### Carregue a Planilha de Distribuição")
+    st.caption("Arraste o arquivo .xlsx ou .csv para processamento")
     arquivo = st.file_uploader("", type=['xlsx', 'csv'])
 
     if arquivo:
@@ -106,7 +107,7 @@ with tab1:
             json_final, avisos, total_perfis, portfolio_nome = transformar_para_hierarquia(df)
             
             # Resumo do Processamento
-            st.info(f"**Processamento:** {total_perfis} perfis identificados no Portfólio **{portfolio_nome}**.")
+            st.info(f"**Processamento Concluído:** {total_perfis} perfis identificados no Portfólio **{portfolio_nome}**.")
 
             # Exibição de Alertas de Erro
             if avisos:
@@ -134,8 +135,10 @@ with tab1:
                 )
         except Exception as e:
             st.error(f"Erro ao processar o arquivo: {e}")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 with tab2:
+    st.markdown("<div class='tab-content manual-content'>", unsafe_allow_html=True)
     st.markdown(f"""
     ### Guia de Operação Interna
     
@@ -155,8 +158,11 @@ with tab2:
     **3. Suporte:**
     Em caso de dúvidas, contate: **gabrielc.silva@bradesco.com.br**
     """)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-# Rodapé institucional
+st.markdown("</div>", unsafe_allow_html=True) # Fecha main-content-wrapper
+
+# Rodapé institucional fixo
 st.markdown("""
     <div class="footer-text">
         © 2026 Banco Bradesco S.A. | Inteligência de Dados | Uso Interno - Recuperação de Crédito
